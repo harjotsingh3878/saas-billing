@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/shared-types" },
+    { "path": "./packages/auth" },
+    { "path": "./packages/events" },
+    { "path": "./apps/gateway" },
+    { "path": "./apps/tenant-service" },
+    { "path": "./apps/subscription-service" },
+    { "path": "./apps/usage-service" },
+    { "path": "./apps/billing-service" },
+    { "path": "./apps/notification-service" }
+  ]
+}
