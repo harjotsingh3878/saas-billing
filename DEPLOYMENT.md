@@ -246,38 +246,38 @@ cdk destroy --all
 
 ## CI/CD Pipeline
 
-Example GitHub Actions workflow:
+### GitHub Actions Setup
 
-```yaml
-name: Deploy
+The project includes a complete GitHub Actions workflow at `.github/workflows/deploy.yml` that automatically:
 
-on:
-  push:
-    branches: [main]
+1. **Deploys Infrastructure**: CDK stacks (DynamoDB, S3, Cognito, EventBridge)
+2. **Packages Lambda Functions**: Builds and deploys all microservices
+3. **Deploys Frontend**: Pushes Next.js app to Vercel
 
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      
-      - name: Install dependencies
-        run: npm install
-      
-      - name: Build
-        run: npm run build
-      
-      - name: Deploy CDK
-        run: |
-          cd infra/aws-cdk
-          npm run deploy -- --require-approval never
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+### Required GitHub Secrets
+
+Go to your repository → Settings → Secrets and variables → Actions:
+
+| Secret Name | Description | Example |
+|------------|-------------|---------|
+| `AWS_ACCESS_KEY_ID` | IAM user access key | `AKIAIOSFODNN7EXAMPLE` |
+| `AWS_SECRET_ACCESS_KEY` | IAM secret key | `wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY` |
+| `AWS_ACCOUNT_ID` | Your 12-digit AWS account ID | `123456789012` |
+| `VERCEL_TOKEN` | Vercel deployment token | Get from [vercel.com/account/tokens](https://vercel.com/account/tokens) |
+| `API_GATEWAY_URL` | API Gateway endpoint (after first deploy) | `https://abc123.execute-api.us-east-1.amazonaws.com` |
+
+### Trigger Deployment
+
+**Automatic**: Push to `main` branch
+```bash
+git push origin main
 ```
+
+**Manual**: Go to Actions tab → Deploy to AWS → Run workflow
+
+### Free Tier Quick Start
+
+For a **FREE demo deployment**, see the [FREE-TIER-DEPLOY.md](./FREE-TIER-DEPLOY.md) guide.
 
 ## Support
 
