@@ -31,10 +31,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
       
-      - name: Build packages
+      - name: Build shared packages first
+        run: |
+          cd packages/shared-types
+          npm ci
+          npm run build
+          cd ../auth
+          npm ci
+          npm run build
+          cd ../events
+          npm ci
+          npm run build
+      
+      - name: Build all services
         run: npm run build
       
       - name: Deploy CDK stacks
