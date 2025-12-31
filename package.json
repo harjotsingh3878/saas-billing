@@ -15,8 +15,12 @@
     "clean": "turbo run clean",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
+    "subgraphs:dev": "concurrently \"npm run dev --workspace=apps/tenant-service\" \"npm run dev --workspace=apps/subscription-service\" \"npm run dev --workspace=apps/usage-service\" \"npm run dev --workspace=apps/billing-service\" \"npm run dev --workspace=apps/notification-service\"",
+    "gateway:dev": "npm run dev --workspace=apps/gateway",
     "services:dev": "concurrently \"npm run dev --workspace=apps/gateway\" \"npm run dev --workspace=apps/tenant-service\" \"npm run dev --workspace=apps/subscription-service\" \"npm run dev --workspace=apps/usage-service\" \"npm run dev --workspace=apps/billing-service\" \"npm run dev --workspace=apps/notification-service\"",
-    "web:dev": "npm run dev --workspace=apps/web"
+    "web:dev": "npm run dev --workspace=apps/web",
+    "db:setup": "cd scripts && npm install && npm run setup",
+    "seed:demo": "cd scripts && npm install && npm run seed"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

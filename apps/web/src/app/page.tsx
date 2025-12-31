@@ -10,14 +10,20 @@ export default function Home() {
         </p>
         <div className="flex gap-4 justify-center">
           <Link
+            href="/signup"
+            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition font-medium"
+          >
+            Get Started Free
+          </Link>
+          <Link
             href="/pricing"
-            className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition"
+            className="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-300 transition font-medium"
           >
             View Pricing
           </Link>
           <Link
             href="/login"
-            className="bg-gray-200 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-300 transition"
+            className="border border-gray-300 text-gray-800 px-8 py-3 rounded-lg hover:bg-gray-50 transition font-medium"
           >
             Sign In
           </Link>

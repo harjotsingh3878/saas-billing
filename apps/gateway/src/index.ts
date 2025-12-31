@@ -6,8 +6,10 @@ import cors from 'cors';
 import { AuthService, createAuthContext } from '@saas-billing/auth';
 import { AuthContext } from '@saas-billing/shared-types';
 import dotenv from 'dotenv';
+import path from 'path';
 
-dotenv.config();
+// Load .env from project root
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const PORT = process.env.PORT || 4000;
 
@@ -50,6 +52,7 @@ async function startServer() {
         { name: 'usage', url: USAGE_SERVICE_URL },
         { name: 'billing', url: BILLING_SERVICE_URL },
       ],
+      pollIntervalInMs: 10000, // Poll for schema updates every 10 seconds
     }),
     buildService({ url }) {
       return new AuthenticatedDataSource({ url });

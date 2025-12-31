@@ -4,10 +4,21 @@ import { Subscription, SubscriptionStatus } from '@saas-billing/shared-types';
 import { addMonths, addYears } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import { getPlanById } from './plans';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env before creating clients
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const client = new DynamoDBClient({
   region: process.env.AWS_REGION || 'us-east-1',
-  ...(process.env.DYNAMODB_ENDPOINT && { endpoint: process.env.DYNAMODB_ENDPOINT }),
+  ...(process.env.DYNAMODB_ENDPOINT && { 
+    endpoint: process.env.DYNAMODB_ENDPOINT,
+    credentials: {
+      accessKeyId: 'local',
+      secretAccessKey: 'local',
+    },
+  }),
 });
 
 const docClient = DynamoDBDocumentClient.from(client);
@@ -95,10 +106,20 @@ export class SubscriptionRepository {
     const expressionAttributeValues: any = {
       ':updatedAt': new Date().toISOString(),
     };
+    const expressionAttributeNames: any = {};
+
+    // DynamoDB reserved keywords that need aliasing
+    const reservedKeywords = ['status', 'name', 'type', 'plan'];
 
     Object.entries(updates).forEach(([key, value]) => {
       if (value !== undefined) {
-        updateExpression.push(`${key} = :${key}`);
+        if (reservedKeywords.includes(key)) {
+          const placeholder = `#${key}`;
+          expressionAttributeNames[placeholder] = key;
+          updateExpression.push(`${placeholder} = :${key}`);
+        } else {
+          updateExpression.push(`${key} = :${key}`);
+        }
         expressionAttributeValues[`:${key}`] = value;
       }
     });
@@ -111,6 +132,7 @@ export class SubscriptionRepository {
         Key: { id },
         UpdateExpression: `SET ${updateExpression.join(', ')}`,
         ExpressionAttributeValues: expressionAttributeValues,
+        ...(Object.keys(expressionAttributeNames).length > 0 && { ExpressionAttributeNames: expressionAttributeNames }),
         ReturnValues: 'ALL_NEW',
       })
     );

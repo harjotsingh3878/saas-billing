@@ -1,28 +1,8 @@
 'use client';
 
-import { useQuery, gql } from '@apollo/client';
-
-const GET_PLANS = gql`
-  query GetPlans {
-    plans {
-      id
-      name
-      type
-      price
-      billingPeriod
-      features {
-        name
-        description
-        included
-      }
-      limits {
-        apiCalls
-        storage
-        users
-      }
-    }
-  }
-`;
+import { useQuery } from '@apollo/client';
+import Link from 'next/link';
+import { GET_PLANS } from '../graphql/queries';
 
 export default function PricingPage() {
   const { loading, error, data } = useQuery(GET_PLANS);
@@ -65,9 +45,12 @@ export default function PricingPage() {
                 <div>Users: {plan.limits.users === -1 ? 'Unlimited' : plan.limits.users}</div>
               </div>
 
-              <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+              <Link 
+                href={`/signup?plan=${plan.id}`}
+                className="block w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition text-center"
+              >
                 Get Started
-              </button>
+              </Link>
             </div>
           ))}
         </div>

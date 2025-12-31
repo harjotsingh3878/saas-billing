@@ -4,12 +4,14 @@ import { buildSubgraphSchema } from '@apollo/subgraph';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { TenantRepository } from './repository';
 import { createKafkaEventBus, createEventBridgePublisher } from '@saas-billing/events';
 
-dotenv.config();
+// Load .env from project root
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const PORT = process.env.PORT || 4001;
 const USE_KAFKA = process.env.USE_KAFKA === 'true';

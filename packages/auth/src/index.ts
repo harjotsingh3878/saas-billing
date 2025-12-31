@@ -63,6 +63,19 @@ export async function createAuthContext(
   authHeader: string | undefined,
   authService: AuthService
 ): Promise<AuthContext | null> {
+  // For local development without Cognito, create a mock context
+  const skipAuth = process.env.SKIP_AUTH === 'true' || process.env.NODE_ENV === 'development';
+  
+  if (skipAuth) {
+    console.log('🔓 Auth bypass enabled - using mock credentials');
+    return {
+      userId: 'user_demo_456',
+      email: 'demo@example.com',
+      tenantId: 'tenant_demo_123',
+      role: UserRole.ADMIN,
+    };
+  }
+
   const token = authService.extractTokenFromHeader(authHeader);
   if (!token) return null;
 

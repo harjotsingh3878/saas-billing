@@ -11,10 +11,11 @@ const authLink = setContext((_, { headers }) => {
   // Get token from localStorage (or Amplify Auth)
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
 
+  // Only include authorization header if we have a token
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      ...(token && { authorization: `Bearer ${token}` }),
     },
   };
 });

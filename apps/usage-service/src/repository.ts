@@ -3,10 +3,21 @@ import { DynamoDBDocumentClient, PutCommand, GetCommand, QueryCommand, UpdateCom
 import { Usage } from '@saas-billing/shared-types';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load .env before creating clients
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 const client = new DynamoDBClient({
   region: process.env.AWS_REGION || 'us-east-1',
-  ...(process.env.DYNAMODB_ENDPOINT && { endpoint: process.env.DYNAMODB_ENDPOINT }),
+  ...(process.env.DYNAMODB_ENDPOINT && { 
+    endpoint: process.env.DYNAMODB_ENDPOINT,
+    credentials: {
+      accessKeyId: 'local',
+      secretAccessKey: 'local',
+    },
+  }),
 });
 
 const docClient = DynamoDBDocumentClient.from(client);

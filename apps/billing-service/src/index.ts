@@ -4,12 +4,17 @@ import { buildSubgraphSchema } from '@apollo/subgraph';
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import { typeDefs } from './schema';
 import { resolvers } from './resolvers';
 import { BillingRepository } from './repository';
 import { createKafkaEventBus, createEventBridgePublisher } from '@saas-billing/events';
 
-dotenv.config();
+// Load .env from project root
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
+
+console.log('🔍 DYNAMODB_ENDPOINT:', process.env.DYNAMODB_ENDPOINT);
+console.log('🔍 S3_ENDPOINT:', process.env.S3_ENDPOINT);
 
 const PORT = process.env.PORT || 4004;
 const USE_KAFKA = process.env.USE_KAFKA === 'true';
