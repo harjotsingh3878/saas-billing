@@ -1,0 +1,32 @@
+{
+  "name": "saas-billing-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Multi-Tenant SaaS Subscription Billing Platform with GraphQL Federation",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "services:dev": "concurrently \"npm run dev --workspace=apps/gateway\" \"npm run dev --workspace=apps/tenant-service\" \"npm run dev --workspace=apps/subscription-service\" \"npm run dev --workspace=apps/usage-service\" \"npm run dev --workspace=apps/billing-service\" \"npm run dev --workspace=apps/notification-service\"",
+    "web:dev": "npm run dev --workspace=apps/web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.0",
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
