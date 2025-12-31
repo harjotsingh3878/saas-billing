@@ -34,7 +34,13 @@ jobs:
       - name: Install all dependencies (workspaces)
         run: npm ci
       
-      - name: Build all packages and services
+      - name: Build packages in order
+        run: |
+          npm run build --workspace=@saas-billing/shared-types
+          npm run build --workspace=@saas-billing/auth
+          npm run build --workspace=@saas-billing/events
+      
+      - name: Build all services
         run: npm run build
       
       - name: Deploy CDK stacks
