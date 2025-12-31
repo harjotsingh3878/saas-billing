@@ -34,14 +34,18 @@ jobs:
       - name: Install all dependencies (workspaces)
         run: npm ci
       
-      - name: Build shared packages first
+      - name: Build all packages and services
         run: |
-          npm run build --workspace=@saas-billing/shared-types
-          npm run build --workspace=@saas-billing/auth
-          npm run build --workspace=@saas-billing/events
-      
-      - name: Build all services and apps
-        run: npm run build --workspace=@saas-billing/gateway --workspace=@saas-billing/tenant-service --workspace=@saas-billing/subscription-service --workspace=@saas-billing/usage-service --workspace=@saas-billing/billing-service --workspace=@saas-billing/notification-service --workspace=@saas-billing/web
+          npm run build --workspace=@saas-billing/shared-types && \
+          npm run build --workspace=@saas-billing/auth && \
+          npm run build --workspace=@saas-billing/events && \
+          npm run build --workspace=@saas-billing/gateway && \
+          npm run build --workspace=@saas-billing/tenant-service && \
+          npm run build --workspace=@saas-billing/subscription-service && \
+          npm run build --workspace=@saas-billing/usage-service && \
+          npm run build --workspace=@saas-billing/billing-service && \
+          npm run build --workspace=@saas-billing/notification-service && \
+          npm run build --workspace=@saas-billing/web
       
       - name: Deploy CDK stacks
         run: |
