@@ -4,11 +4,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "declaration": true,
-    "declarationMap": true,
-    "baseUrl": ".",
-    "paths": {
-      "@saas-billing/shared-types": ["../shared-types/dist"]
-    }
+    "declarationMap": true
   },
   "include": ["src/**/*"]
 }

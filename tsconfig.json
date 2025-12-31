@@ -16,13 +16,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "composite": true,
-    "incremental": true,
-    "baseUrl": ".",
-    "paths": {
-      "@saas-billing/shared-types": ["./packages/shared-types/src"],
-      "@saas-billing/auth": ["./packages/auth/src"],
-      "@saas-billing/events": ["./packages/events/src"]
-    }
+    "incremental": true
   },
   "exclude": ["node_modules", "dist", "build", ".next"]
 }
