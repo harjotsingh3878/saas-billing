@@ -24,12 +24,21 @@ for service in "${SERVICES[@]}"; do
   
   # Create deployment package
   mkdir -p dist-lambda
-  cp -r dist/* dist-lambda/
+  
+  # Check if dist directory exists (build may have failed)
+  if [ -d "dist" ]; then
+    cp -r dist/* dist-lambda/
+  else
+    echo "⚠️  No dist directory found for $service, skipping..."
+    cd ../..
+    continue
+  fi
+  
   cp package.json dist-lambda/
   
-  # Install production dependencies
+  # Install production dependencies using npm install (no package-lock in subdirs)
   cd dist-lambda
-  npm ci --production --omit=dev
+  npm install --production --omit=dev || echo "⚠️  npm install failed, continuing..."
   
   # Create zip file
   zip -r "../${service}.zip" . -q
