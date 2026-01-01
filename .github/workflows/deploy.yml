@@ -106,4 +106,3 @@ jobs:
         working-directory: apps/web
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.API_GATEWAY_URL }}
-        working-directory: apps/web
