@@ -20,6 +20,7 @@ npx tsc --build tsconfig.build.json --force || echo "⚠️ TypeScript build had
 
 # Build web app
 echo "Building Next.js app..."
-npm run build --workspace=@saas-billing/web
+cd apps/web
+npm run build
 
 echo "✅ Build complete!"
