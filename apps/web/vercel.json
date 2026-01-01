@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd ../.. && npm ci && npm run build --workspace=@saas-billing/web",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "echo 'Skipping install, using buildCommand'",
+  "ignoreCommand": "exit 0"
+}
