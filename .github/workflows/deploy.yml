@@ -36,6 +36,9 @@ jobs:
       
       - name: Build all packages and services with TypeScript project references
         run: npx tsc --build tsconfig.build.json
+      
+      - name: Deploy CDK infrastructure
+        run: |
           cd infra/aws-cdk
           npm ci
           npm run cdk deploy -- --all --require-approval never
