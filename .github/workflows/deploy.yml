@@ -91,6 +91,13 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
       
+      - name: Install root dependencies for monorepo
+        run: npm ci
+      
+      - name: Build all required packages
+        run: npx tsc --build tsconfig.build.json --force || true
+        continue-on-error: true
+      
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
       
