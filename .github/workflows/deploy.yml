@@ -35,7 +35,7 @@ jobs:
         run: npm ci
       
       - name: Build all packages and services with TypeScript project references
-        run: npx tsc --build tsconfig.build.json
+        run: npx tsc --build tsconfig.build.json --force
       
       - name: Deploy CDK infrastructure
         run: |
