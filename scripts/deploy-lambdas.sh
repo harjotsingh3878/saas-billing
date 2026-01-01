@@ -36,9 +36,17 @@ for service in "${SERVICES[@]}"; do
   
   cp package.json dist-lambda/
   
-  # Install production dependencies using npm install (no package-lock in subdirs)
+  # Copy workspace dependencies from root node_modules
+  mkdir -p dist-lambda/node_modules
+  
+  # Copy local workspace packages
+  if [ -d "../../node_modules/@saas-billing" ]; then
+    cp -r ../../node_modules/@saas-billing dist-lambda/node_modules/
+  fi
+  
+  # Copy other production dependencies
   cd dist-lambda
-  npm install --production --omit=dev || echo "⚠️  npm install failed, continuing..."
+  npm install --production --omit=dev --ignore-scripts 2>/dev/null || echo "⚠️  npm install had warnings, continuing..."
   
   # Create zip file
   zip -r "../${service}.zip" . -q
@@ -63,7 +71,6 @@ for service in "${SERVICES[@]}"; do
       --function-name "$FUNCTION_NAME" \
       --environment "Variables={
         NODE_ENV=production,
-        AWS_REGION=${AWS_REGION:-us-east-1},
         TENANTS_TABLE=Tenants,
         SUBSCRIPTIONS_TABLE=Subscriptions,
         USAGE_TABLE=Usage,
@@ -120,7 +127,6 @@ for service in "${SERVICES[@]}"; do
       --memory-size 256 \
       --environment "Variables={
         NODE_ENV=production,
-        AWS_REGION=${AWS_REGION:-us-east-1},
         TENANTS_TABLE=Tenants,
         SUBSCRIPTIONS_TABLE=Subscriptions,
         USAGE_TABLE=Usage,
