@@ -1,5 +1,5 @@
 {
-  "buildCommand": "cd ../.. && npm install && npm run build --workspace=@saas-billing/web",
+  "buildCommand": "cd ../.. && rm -rf node_modules && npm install && npm run build --workspace=@saas-billing/web",
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
